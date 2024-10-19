@@ -28,6 +28,9 @@ exports.register = async (req, res) => {
 
     const tokenVal= jwt.sign(payload,process.env.JWT_TOKEN,{ expiresIn: '1h' },(err, token) => {
         if (err) throw err;
+        // res.cookie('token',token,{
+        //   httpOnly: true,
+        // });
         res.json({ token });
       }
     );
@@ -64,9 +67,9 @@ exports.login = async (req, res) => {
       { expiresIn: '1h' },
         (err, token) => {
           if (err) throw err;
-          res.cookie('token',token,{
-            httpOnly: true,
-          });
+          // res.cookie('token',token,{
+          //   httpOnly: true,
+          // });
           res.json({ token });
         }
     );

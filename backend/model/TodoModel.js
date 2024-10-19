@@ -10,7 +10,7 @@ const todoSchema = new mongoose.Schema({
   },
   status: { 
     type: String, 
-    enum: ['pending', 'in-progress', 'completed'], 
+    enum: ['pending', 'completed'], 
     default: 'pending' 
   },
   dueDate: { 
@@ -24,5 +24,5 @@ const todoSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
-
-module.exports = mongoose.model('Todo', todoSchema);
+const Todo = mongoose.model('Todo', todoSchema);
+module.exports = Todo;

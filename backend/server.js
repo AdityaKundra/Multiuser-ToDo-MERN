@@ -33,8 +33,12 @@ app.get('/',(req,res)=>{
 
 app.use('/api/auth',userAuth);
 app.use('/api/todo', verifyJWT, todoAuth);
-app.use('/auth/protected', verifyJWT, (req, res)=>{
+app.get('/auth/protected', verifyJWT, (req, res)=>{
     res.json({message: 'Protected route accessed'});
+});
+app.get('/auth/logout', (req, res)=>{
+    res.clearCookie("token");
+    res.json({message: 'user logged out'});
 });
 
 

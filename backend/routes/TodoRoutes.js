@@ -5,8 +5,8 @@ const cors = require('cors');
 
 // Route
 
+router.get('/', allTodos);
 router.post('/add', addTodo);
 router.post('/remove', removeTodo);
-router.post('/', allTodos);
 
 module.exports = router;
