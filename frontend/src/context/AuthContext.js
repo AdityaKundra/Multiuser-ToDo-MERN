@@ -23,6 +23,7 @@ export const AuthProvider = ({children}) => {
             }else{
                 setIsAuthenticated(false);
                 console.log(`Auth Failed Status Code ${authCall.status}`)
+                
             }
 
         }catch(err){

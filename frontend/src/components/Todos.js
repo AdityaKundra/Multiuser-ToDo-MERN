@@ -9,13 +9,20 @@ const Todos = () => {
 
   const [allTodos, setAllTodos] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
-  const openModal = () => {
+  const handleNewData = (newData)=>{
+    setAllTodos((prevState)=>[newData, ...prevState])
+  }
+
+  const openModal = (task) => {
     setModalIsOpen(true);
+    setModalData(task)
   };
 
-  const closeModal = () => {
+  const closeModal = (e) => {
     setModalIsOpen(false);
+    setModalData([]); 
   };
 
   useEffect(()=>{
@@ -42,21 +49,24 @@ const Todos = () => {
       <TaskList>
         {
           allTodos.map((task) => (              
-              <div key={task._id} className="p-4 bg-white rounded shadow" onClick={openModal}>
+              <div key={task._id} className="p-4 bg-white rounded shadow" onClick={()=>openModal(task)}>
                 {/* <input type="checkbox" checked={task.status} /> */}
                 <input type="checkbox" />
                 <h3>{task.title}</h3>
-                <p className={`text-sm ${task.status? 'line-through' : ''}`}>{task.description}</p>
+                <div className='flex justify-between'>
+                  <span className={`text-sm ${task.status !=='pending'? 'line-through' : ''}`}>{task.description}</span>
+                  <span className="text-sm">{task.status}</span>
+                </div>
               </div>
             ))
         }
       </TaskList>
 
-    <AddTodoForm/>
+    <AddTodoForm handleNewData = {handleNewData} />
 
       {/* TaskDetailsModal */}
       
-      <TaskDetailsModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+      <TaskDetailsModal isOpen={modalIsOpen} onRequestClose={closeModal} modalData={modalData} />
 
     </div>
     </>

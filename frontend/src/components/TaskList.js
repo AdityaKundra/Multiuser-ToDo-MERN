@@ -4,7 +4,7 @@ const TaskList = ({children }) => {
     <>
       <div className= "w-2/4 p-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Today</h2>
+          <h2 className="text-2xl font-semibold">Todo's</h2>
           <span className="text-xl">{children.length}</span>
         </div>
         <div className="space-y-4">{children}</div>

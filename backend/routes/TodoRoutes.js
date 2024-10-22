@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { removeTodo, addTodo, allTodos } = require('../controller/TodoController');
+const { removeTodo, addTodo, allTodos, updateTodo, subTask } = require('../controller/TodoController');
 const cors = require('cors');
 
 // Route
@@ -8,5 +8,7 @@ const cors = require('cors');
 router.get('/', allTodos);
 router.post('/add', addTodo);
 router.post('/remove', removeTodo);
+router.post('/update', updateTodo);
+router.post('/subTask', subTask);
 
 module.exports = router;

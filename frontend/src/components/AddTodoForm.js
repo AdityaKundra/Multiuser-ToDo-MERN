@@ -1,11 +1,11 @@
 import {useState} from 'react'
 import axios from 'axios';
 
-const AddTodoForm = () => {
+const AddTodoForm = ({handleNewData}) => {
    
     const [todoTitle, setTodotitle] = useState(''); 
     const [todoDesc, setTodoDesc] = useState('');
-    const [todoStatus, setTodoStatus] = useState('');
+    const [todoStatus, setTodoStatus] = useState('pending');
     const [todoDueDate, setTodoDueDate] = useState('');
 
     const createTodo = async()=>{
@@ -16,15 +16,12 @@ const AddTodoForm = () => {
             'Authorization': `Bearer ${token}`,
           } 
         });
-    
         if(todoRequest.status === 200){
-          // setAllTodos((e)=>{
-          //   return [...e, todoRequest.data];
-          // });
           setTodotitle('');
           setTodoDesc('');
-          setTodoStatus('');
+          setTodoStatus('pending');
           setTodoDueDate('');
+          handleNewData(todoRequest.data)
         }
       }
     
@@ -33,62 +30,6 @@ const AddTodoForm = () => {
         // API call to create todo
         createTodo();
       }
-
-  // return (
-  //   <>
-  //     <div>
-  //       <h3>Add Todo!</h3>
-  //       <form onSubmit={handleSubmit}>
-  //         <div>
-  //           <label>Title:</label>
-  //           <input
-  //             type="text"
-  //             name="title"
-  //             required
-  //             autoComplete="off"
-  //             value={todoTitle}
-  //             onChange={(e) => setTodotitle(e.target.value)}
-  //           />
-  //         </div>
-  //         <div>
-  //           <label>Description:</label>
-  //           <input
-  //             type="text"
-  //             name="title"
-  //             required
-  //             autoComplete="off"
-  //             value={todoDesc}
-  //             onChange={(e) => setTodoDesc(e.target.value)}
-  //           />
-  //         </div>
-  //         <div>
-  //           <label>Status:</label>
-  //           <select
-  //             name="status"
-  //             value={todoStatus}
-  //             onChange={(e) => setTodoStatus(e.target.value)}
-  //           >
-  //             <option value="pending">Pending</option>
-  //             <option value="in-progress">In Progress</option>
-  //             <option value="completed">Completed</option>
-  //           </select>
-  //         </div>
-  //         <div>
-  //           <label>Reminder:</label>
-  //           <input
-  //             type="datetime-local"
-  //             name="dueDate"
-  //             value={todoDueDate}
-  //             onChange={(e) => setTodoDueDate(e.target.value)}
-  //           />
-  //         </div>
-  //         <div>
-  //           <button type="submit">Add Todo</button>
-  //         </div>
-  //       </form>
-  //     </div>
-  //   </>
-  // );
   return (
     <div className="w-1/4 mx-2 p-6 bg-white rounded-lg shadow-md mt-8">
       <h3 className="text-2xl font-semibold mb-6 text-center">Add Todo</h3>
@@ -131,7 +72,6 @@ const AddTodoForm = () => {
             className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
         </div>

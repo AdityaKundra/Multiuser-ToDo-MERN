@@ -1,6 +1,16 @@
-import React from 'react';
+import {useContext} from 'react';
+import AuthContext from '../context/AuthContext';   
+import { useNavigate } from "react-router-dom";
+
 
 const Sidebar = ({setTodoForm}) => {
+  const {setIsAuthenticated} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    navigate('/');
+  };
   return (
     <div className="w-1/4 p-4 bg-gray-100 h-screen">
       <div className="mb-4">
@@ -28,7 +38,7 @@ const Sidebar = ({setTodoForm}) => {
        <button className="w-full py-2 bg-green-500 text-white rounded mt-4 hover:bg-green-600" onClick={setTodoForm}>
           + Add Todo
         </button> */}
-        <button className="w-full py-2 bg-red-500 text-white rounded mt-2">Sign Out</button>
+        <button className="w-full py-2 bg-red-500 text-white rounded mt-2" onClick={handleLogout}>Sign Out</button>
       </div>
     </div>
   );
