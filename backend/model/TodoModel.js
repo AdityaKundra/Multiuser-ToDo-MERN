@@ -21,9 +21,10 @@ const todoSchema = new mongoose.Schema({
     ref: 'User', 
     required: true 
   },
-  subTask:{
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Todo'
+  parentId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Todo',
+    default: null
   }
 }, {
   timestamps: true

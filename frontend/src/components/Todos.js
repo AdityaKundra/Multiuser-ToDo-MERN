@@ -16,6 +16,30 @@ const Todos = () => {
   }
 
   const openModal = (task) => {
+    const fetchSubTask = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        // Make sure token exists before making the request
+        if (!token) {
+          throw new Error('No token found. User not authenticated.');
+        }
+    
+        const subTasks = await axios.get(`http://localhost:5000/api/todo/subTask/${task._id}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+    
+        if (subTasks.status === 200) {
+          task.subTask = subTasks.data
+        }
+      } catch (error) {
+        console.error('Error fetching sub-tasks:', error);
+        // Handle errors like showing an alert or notifying the user
+      }
+    };
+    fetchSubTask()
     setModalIsOpen(true);
     setModalData(task)
   };

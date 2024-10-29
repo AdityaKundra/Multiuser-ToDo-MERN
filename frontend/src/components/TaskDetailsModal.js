@@ -17,10 +17,9 @@ const TaskDetailsModal = ({ isOpen, onRequestClose, modalData}) => {
     useEffect(()=>{
       if(modalData){
         setTodoData(modalData)
-        if (modalData.subTasks) {
+        if (modalData.subTask) {
           setSubTaskInput(modalData.subTask); // Assuming subtasks come with modalData
         }
-  
       }
     },[modalData])
 
@@ -33,7 +32,9 @@ const TaskDetailsModal = ({ isOpen, onRequestClose, modalData}) => {
         "title": '',
         "description": '',
         "status": '',
-        "dueDate": ''});
+        "dueDate": '',
+        owner:'', 
+        parentId: ''});
       onRequestClose();
     }
     
@@ -42,7 +43,7 @@ const TaskDetailsModal = ({ isOpen, onRequestClose, modalData}) => {
     };
 
     const addSubTask = (e)=>{
-      setSubTaskInput((prevState => [...addSubTaskInput, {title:"", description: "", status: "pending", dueDate: "", owner:modalData.owner}]))
+      setSubTaskInput((prevState => [...addSubTaskInput, {title:"", description: "", status: "pending", dueDate: "", owner:modalData.owner, parentId: modalData._id}]))
       console.log(`subTask`);
       console.log(addSubTaskInput);
       // setAllTodos((prevState)=>[...prevState, newData])
@@ -59,19 +60,19 @@ const TaskDetailsModal = ({ isOpen, onRequestClose, modalData}) => {
         // const subtasksIds = 
         console.log(subtaskRequest.data);
      }
-      // const newTodo = {id: todoData._id, title: todoData.title, description: todoData.description, status: todoData.status, dueDate: todoData.dueDate};
-      // const todoRequest = await axios.post('http://localhost:5000/api/todo/update', newTodo,{
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`,
-      //   } 
-      // });
-      // if(todoRequest.status === 200){
-      //   setTodoData({
-      //     "title": todoRequest.data.title,
-      //     "description": todoRequest.data.description,
-      //     "status": todoRequest.data.status,
-      //     "dueDate": todoRequest.data.dueDate});
-      // }
+      const newTodo = {id: todoData._id, title: todoData.title, description: todoData.description, status: todoData.status, dueDate: todoData.dueDate};
+      const todoRequest = await axios.post('http://localhost:5000/api/todo/update', newTodo,{
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        } 
+      });
+      if(todoRequest.status === 200){
+        setTodoData({
+          "title": todoRequest.data.title,
+          "description": todoRequest.data.description,
+          "status": todoRequest.data.status,
+          "dueDate": todoRequest.data.dueDate});
+      }
     } 
 
   return (
@@ -103,7 +104,7 @@ const TaskDetailsModal = ({ isOpen, onRequestClose, modalData}) => {
             <option value="completed">Completed</option>
           </select>
         </div>
-        <button onClick={onRequestClose} className="text-gray-500 hover:text-black">
+        <button onClick={closeModal} className="text-gray-500 hover:text-black">
           &#x2715;
         </button>
       </div>
