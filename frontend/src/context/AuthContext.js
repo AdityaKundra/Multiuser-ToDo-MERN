@@ -11,7 +11,7 @@ export const AuthProvider = ({children}) => {
         try{
             
             const  token = localStorage.getItem('token'); 
-            const authCall =await axios.get('http://localhost:5000/auth/protected',{
+            const authCall =await axios.get('http://localhost:5001/auth/protected',{
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 } 

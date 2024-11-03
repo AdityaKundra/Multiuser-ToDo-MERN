@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+mongoose.set('strictQuery', true);
 const connectDB = async () => {
   try {
     await mongoose.connect('mongodb://localhost:27017/beProjectTodo', {
@@ -13,5 +14,4 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
 module.exports = connectDB;

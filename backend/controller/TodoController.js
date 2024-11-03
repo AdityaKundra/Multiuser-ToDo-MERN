@@ -44,19 +44,23 @@ exports.updateTodo = async(req, res)=>{
 
 exports.subTask = async(req, res)=>{
   const subTasks = req.body;
+  const returnPayload = []
   try{
-    // const saveSubTask = await Todo.findByIdAndUpdate(subTask.id,subTasks, {new:true});
-    const saveSubTasks = await Promise.all(
-      subTasks.map(async (subTask) => {
-        return await Todo.findByIdAndUpdate(subTask._id, subTask, { new: true });
-      })
-    );
+    for(subTask of subTasks){
+      if(subTask._id){
+        const updateSubTask = await Todo.findByIdAndUpdate(subTask._id, subTask, { new: true });
+        returnPayload.push(updateSubTask._id)
+      }else{
+        const newTaskId = new Todo(subTask);
+        const response = await newTaskId.save();
+        returnPayload.push(response._id)
 
-    const ids = saveSubTasks.map(item => item._id);
-    res.status(200).send(ids);
+      }
+    }
+    res.status(200).json(returnPayload);
   }catch(err){
     console.error(err.message);
-    res.status(500).send('Data Not Saved!!!!');
+    res.status(500).send('Data Not Saved!');
   }
 }
 
@@ -69,6 +73,31 @@ exports.getSubTask = async(req, res)=>{
   }catch(err){
     console.error("err");
     console.error(err.message);
+    res.status(500).send('Error Occured, Try Again Later!');
+  }
+}
+
+exports.status = async(req, res)=>{
+  const {taskId, status } = req.body
+  try{
+    const updateStatus = await Todo.findByIdAndUpdate(taskId, {
+      $set:{status}
+    }, {new:true})
+    console.log(updateStatus)
+    res.status(200).send(updateStatus)
+  }catch(err){
+    console.error("err");
+    console.error(err.message);
+    res.status(500).send('Error Occured, Try Again Later!');
+
+  }
+}
+exports.removeSubTask = async(req, res)=>{
+  const todoId = req.body
+  try{
+    res.status(200).send(await Todo.deleteOne({ _id: todoId }))
+  }catch(err){
+    console.log(err.message)
     res.status(500).send('Error Occured, Try Again Later!');
   }
 }

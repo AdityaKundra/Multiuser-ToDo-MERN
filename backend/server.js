@@ -14,13 +14,13 @@ const verifyJWT = require('./controller/verifyJWTtoken');
 // creating express instance 
 const app = express();
 
-// middleware
-app.use(bodyParser.json());
-app.use(cookieParser());
+// Middleware
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3000', // No trailing slash
     credentials: true,
 }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 // app.use(verifyJWT);
 
@@ -31,7 +31,7 @@ app.get('/',(req,res)=>{
 })
 // Routes
 
-app.use('/api/auth',userAuth);
+app.use('/api/auth', cors(),userAuth);
 app.use('/api/todo', verifyJWT, todoAuth);
 app.get('/auth/protected', verifyJWT, (req, res)=>{
     res.json({message: 'Protected route accessed'});
@@ -42,6 +42,6 @@ app.get('/auth/logout', (req, res)=>{
 });
 
 
-const PORT = 5000;
+const PORT = 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
